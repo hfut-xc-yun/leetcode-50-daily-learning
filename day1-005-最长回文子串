@@ -1,0 +1,53 @@
+原题:https://leetcode-cn.com/problems/longest-palindromic-substring/
+
+实现：
+  1）总体思路：想象两个人从山顶向下走，两个人到达山底时走的最远就是最长距离。双指针法，从中间向两边走，遇到两个相等则停止，保存步长;继续向右移动中心位置，重复上述操作，找到最大步长;ps
+  :奇数步长与偶数步长不同,分开处理;
+  
+  class Solution {
+public:
+    string longestPalindrome(string s) {
+        if (s.size()<2) return s;
+        int center = 0;
+        int left = center;
+        int right = center;
+        string res;
+        string odd_res;
+        string ou_res;
+        string max_str;
+        int str_size = s.size();
+        int max_s = 1;
+        while(center <= str_size){
+            left = center;
+            right = center;
+            while(left >= 0 && right < str_size){
+                if(s[left]==s[right]){
+                    odd_res = s.substr(left,right-left+1);
+                    left--;
+                    right++;
+                }
+                else break; 
+            }
+            
+            left = center;
+            right = center+1;
+            while(left >= 0 && right < str_size){
+                if(s[left]==s[right]){
+                    ou_res = s.substr(left,right-left+1);
+                    left--;
+                    right++;
+                }
+                else break;
+            }
+            center++;
+            max_str = odd_res.size()>ou_res.size() ? odd_res : ou_res;
+            if(max_str.size()>=max_s) {
+                res = max_str;
+                max_s = max_str.size();
+            }
+            if(max_s==str_size) break;
+        }
+        return res;
+    }
+};
+  
